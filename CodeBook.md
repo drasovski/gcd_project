@@ -4,20 +4,20 @@
 
 It is assumed that the UCI HAR Dataset folder has been extracted and that it resides in the working directory. The original data can be downloaded from here: https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
 
-A description of the experiment as well as other useful notes can be found in the README.txt file.
+A description of the experiment as well as other useful notes can be found in the ‘README.txt’ file.
 
-The relevant files in the UCI HAR Data Set folder are (descriptions copied from the README.txt file in said folder):
+The relevant files in the UCI HAR Data Set folder are (descriptions copied from the ‘README.txt’ file in said folder):
 
-* 'features.txt': List of all features.
+* 'features.txt': List of all features
 * 'activity_labels.txt': Links the class labels with their activity name
-* 'train/X_train.txt': Training set.
-* 'train/y_train.txt': Training labels.
-* 'test/X_test.txt': Test set.
-* 'test/y_test.txt': Test labels.
+* 'train/X_train.txt': Training set
+* 'train/y_train.txt': Training labels
+* 'test/X_test.txt': Test set
+* 'test/y_test.txt': Test labels
 * 'train/subject_train.txt': Each row identifies the subject who performed the activity for each window sample
-* 'test/subject_test.txt': Each row identifies the subject who performed the activity for each window sample.
+* 'test/subject_test.txt': Each row identifies the subject who performed the activity for each window sample
 
-The original 561 variables collected in the study are fully listed in 'features.txt' and are explained in 'features_info.txt' and so I will not repeat them here. I will explain the variables that made it into the final two data sets in the 'Variables' section below.
+The original 561 variables collected in the study are fully listed in 'features.txt' and are explained in 'features_info.txt' and so I will not repeat them here. I will provide only the variables that made it into the final two tidy data sets in the 'Variables' section below.
 
 ## Procedures and Transformations
 
@@ -25,16 +25,16 @@ The original 561 variables collected in the study are fully listed in 'features.
 * 'subjectTrain', 'yTrain', and 'xTrain' were stacked column-wise in a data frame called 'train'
 * 'subjectTest', 'yTest', and 'yTrain' were stacked column-wise in a data frame called 'test'
 * 'train' and 'test' were stacked row-wise in a data frame called 'complete'
-* Columns 1 and 2 of 'complete' were renamed 'subject' and 'activity' while the names for the rest of the 561 variables were taken from 'features'.
-* The 'subject' and 'activity' variables as well as any variables containing the string "mean()" or "std()" (which refer to mean and standard deviation measurements on a set of 17 key measurements listed in 'features_info.txt') were copied to a new data frame called 'meansStds' (see the 'Summary Choices' section below on why only these variables were selected) containing 10,299 rows and 68 columns
-* Variables erroneously including the string "BodyBody" were corrected to include only "Body"
+* Columns 1 and 2 of 'complete' were renamed 'subject' and 'activity' while the names for the rest of the 561 variables were taken from 'features'
+* The 'subject' and 'activity' variables as well as any variables containing the string "mean()" or "std()" (which refer to mean and standard deviation functions applied on a set of 33 key measurements listed in 'features_info.txt') were copied to a new data frame called 'meansStds' (see the 'Summary Choices' section below on why only these variables were selected) containing 10,299 rows and 68 columns
+* Variables erroneously including the string "BodyBody" were corrected to include only one "Body"
 * Original variable names were also altered as follows:
-  * hyphens ("-") were replaced by dots (".")
-  * parantheses ("(" and ")") were removed
+  * Hyphens ("-") were replaced by dots (".")
+  * Parentheses ("(" and ")") were removed
 * No other alterations were made to variable names (see 'Summary Choices' section)
 * Numerical values of the 'activity' variable were replaced with corresponding descriptive English labels as given in 'activityLabels'
-* The 'subject' variable values were recoded from numerical to factor
-* Data frame 'subjActMeans' was created by averaging the values of each of the latter 66 columns for each subject-activity pair
+* The 'subject' variable values were recoded from integer to factor
+* Data frame 'subjActMeans' was created by averaging the values of each of the latter 66 variables for each subject-activity pair
 * 'subjActMeans' was exported as a tab-separated text file called 'tidyData.txt'
 
 ## Final Variables
@@ -42,11 +42,9 @@ The original 561 variables collected in the study are fully listed in 'features.
 Below is a list of 68 variables that are present in the data frames 'meansStds' and 'subjActMeans':
 
 1. subject: experimental subject identifier
-  * factor with 30 levels: 1, 2, 3, ..., 30 
+  * factor with 30 levels: “1”, “2”, “3”, ..., “30” 
 2. activity: activity labels
   * factor with 6 levels: "WALKING", "WALKING_UPSTAIRS", "WALKING_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"
-1.	subject
-2.	activity
 3.	tBodyAcc.mean.X
 4.	tBodyAcc.mean.Y
 5.	tBodyAcc.mean.Z      
@@ -130,14 +128,14 @@ Variables 3-68 are numerical values ranging from -1 to 1. For more explanation, 
 
 ### Variable Selection
 
-The project specification asks for "measurements on the mean and standard deviation for each measurement." 'features.txt' contains 56 variables that contain '[Mm]ean' and 33 variables that contain 'std'. Upon futher exploration of 'features_info.txt', of the 56 variables that contain '[Mm]ean', only 33 come directly from the accelorometer and gyroscope features. Other measurements were derived from these original features, but do not come from applying mean() or std(). It also seemd appropriate that the number of mean variables and the number of standard deviation variables match.
+The project specification asks for "measurements on the mean and standard deviation for each measurement." 'features.txt' contains 56 variables that contain the string '[Mm]ean' and 33 variables that contain 'std'. Upon further exploration of 'features_info.txt', of the 56 variables that contain '[Mm]ean', only 33 come directly from the accelerometer and gyroscope features. Other measurements are derived from these original features, but do not come from applying mean() or std() functions. It also seemed appropriate that the number of mean variables and the number of standard deviation variables match.
 
 ## Variable Naming
 
-'subject' and 'activity' are both descriptive and self-explanatory names for an experimental subject identifier and an activity label.
+'subject' and 'activity' are both descriptive and self-explanatory names for an experimental subject identifier and an activity label, respectively.
 
-Originally, the names of the other variables was loaded from the original data's 'features.txt'.
-* Hyphens and parantheses were removed as they do not properly process in R in general (clarity and convention also played a role
-* Dots replaced hyphens to separate feature name from measurement type (mean, std) and measurement type from X,Y, Z direction (when available)
-* Variable names could have been made slighly more descpritive by replacing abbreviated parts of the variable with their unabbreviated counterparts, but that would have made variable names even longer than they were originally
+At first, the names of the other variables were loaded from the original data's 'features.txt' file.
+* Hyphens and parentheses were removed as they do not properly process in R (clarity and convention also played a role)
+* Dots replaced hyphens to separate feature name from measurement type (mean, std) and measurement type from the X, Y, or Z direction identifier (where available)
+* Variable names could have been made slightly more descriptive by replacing abbreviated parts of the variable with their unabbreviated counterparts, but that would have made variable names even longer than they were originally, which would have been a nuisance when viewing or summarizing the data
 * camelCase was kept in place of making the variable name lower-case for readability of the different name components
