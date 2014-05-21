@@ -130,7 +130,7 @@ Variables 3-68 are numerical values ranging from -1 to 1. For more explanation, 
 
 The project specification asks for "measurements on the mean and standard deviation for each measurement." 'features.txt' contains 56 variables that contain the string '[Mm]ean' and 33 variables that contain 'std'. Upon further exploration of 'features_info.txt', of the 56 variables that contain '[Mm]ean', only 33 come directly from the accelerometer and gyroscope features. Other measurements are derived from these original features, but do not come from applying mean() or std() functions. It also seemed appropriate that the number of mean variables and the number of standard deviation variables match.
 
-## Variable Naming
+### Variable Naming
 
 'subject' and 'activity' are both descriptive and self-explanatory names for an experimental subject identifier and an activity label, respectively.
 
